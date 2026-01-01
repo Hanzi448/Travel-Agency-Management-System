@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from models.package import Package
-from models.destination import Destination
-from schemas.package import PackageCreate
+from app.models.package import Package
+from app.models.destination import Destination
+from app.schemas.package import PackageCreate
 
 
 def create_package(db: Session, package: PackageCreate):

@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
-from models.booking import Booking
-from models.customer import Customer
-from models.package import Package
-from schemas.booking import BookingCreate
+from app.models.booking import Booking
+from app.models.customer import Customer
+from app.models.package import Package
+from app.schemas.booking import BookingCreate
 
 def create_booking(db: Session, booking: BookingCreate):
     # Validate that customer exists

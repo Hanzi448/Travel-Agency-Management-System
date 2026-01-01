@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from models.booking import Booking
-from models.payment import Payment
-from schemas.payment import PaymentCreate
+from app.models.booking import Booking
+from app.models.payment import Payment
+from app.schemas.payment import PaymentCreate
 
 def create_payment(db: Session, payment: PaymentCreate):
     # FK validation: booking must exist

@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, APIRouter, Depends
 
-from database import get_db
-from schemas.payment import PaymentCreate, PaymentResponse
-from crud.payment import (
+from app.database import get_db
+from app.schemas.payment import PaymentCreate, PaymentResponse
+from app.crud.payment import (
     create_payment,
     get_all_payments,
     get_payment_by_id,

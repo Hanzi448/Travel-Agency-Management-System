@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from database import get_db
-from schemas.package import PackageCreate, PackageResponse
-from crud.package import (
+from app.database import get_db
+from app.schemas.package import PackageCreate, PackageResponse
+from app.crud.package import (
     create_package,
-    get_all_packaages,
+    get_all_packages,
     get_package_by_id,
     update_package,
     delete_package,
@@ -22,7 +22,7 @@ def add_package(package: PackageCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[PackageResponse])
 def read_packages(db: Session = Depends(get_db)):
-    return get_all_packaages(db)
+    return get_all_packages(db)
 
 @router.get("/{package_id}", response_model=PackageResponse)
 def read_package(package_id: int, db: Session = Depends(get_db)):

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from reports.reports import (
+from app.reports.reports import (
     packages_by_destination,
     bookings_by_customer,
     total_revenue,

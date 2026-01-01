@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models.destination import Destination
+from app.models.destination import Destination
 from app.schemas.destination import DestinationCreate
 
 def create_destination(db: Session, destination: DestinationCreate):

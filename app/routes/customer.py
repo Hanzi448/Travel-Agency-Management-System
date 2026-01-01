@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from database import get_db
-from schemas.customer import CustomerCreate, CustomerResponse
-from crud.customer import (
+from app.database import get_db
+from app.schemas.customer import CustomerCreate, CustomerBase
+from app.crud.customer import (
     create_customer,
     get_all_customers,
     get_customer_by_id,
@@ -13,22 +13,22 @@ from crud.customer import (
 
 router = APIRouter(prefix="/customers", tags=["customers"])
 
-@router.post("/", response_model=CustomerResponse)
+@router.post("/", response_model=CustomerBase)
 def add_customer(customer: CustomerCreate, db: Session = Depends(get_db)):
     return create_customer(db, customer)
 
-@router.get("/", response_model=list[CustomerResponse])
+@router.get("/", response_model=list[CustomerBase])
 def read_customers(db: Session = Depends(get_db)):
     return get_all_customers(db)
 
-@router.get("/{customer_id}", response_model=CustomerResponse)
+@router.get("/{customer_id}", response_model=CustomerBase)
 def read_customer(customer_id: int, db: Session = Depends(get_db)):
     customer = get_customer_by_id(db, customer_id)
     if not customer:
         raise HTTPException(status_code=404, detail="Customer not found")
     return customer
 
-@router.put("/{customer_id}", response_model=CustomerResponse)
+@router.put("/{customer_id}", response_model=CustomerBase)
 def edit_customer(customer_id: int, customer: CustomerCreate, db: Session = Depends(get_db)):
     updated = update_customer(db, customer_id, customer)
     if not updated:

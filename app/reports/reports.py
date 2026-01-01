@@ -1,9 +1,10 @@
-from sqlalchemy.orm import Session, func
-from models.package import Package
-from models.booking import Booking
-from models.payment import Payment
-from models.destination import Destination
-from models.customer import Customer
+from sqlalchemy.orm import Session
+from sqlalchemy import func
+from app.models.package import Package
+from app.models.booking import Booking
+from app.models.payment import Payment
+from app.models.destination import Destination
+from app.models.customer import Customer
 
 def packages_by_destination(db: Session, destination_id: int):
     return db.query(Package).filter(Package.destination_id == destination_id).all()

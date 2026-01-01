@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, APIRouter, Depends
 
-from database import get_db
-from schemas.booking import BookingCreate, BookingResponse
-from crud.booking import (
+from app.database import get_db
+from app.schemas.booking import BookingCreate, BookingResponse
+from app.crud.booking import (
     create_booking,
     get_all_bookings,
     get_booking_by_id,

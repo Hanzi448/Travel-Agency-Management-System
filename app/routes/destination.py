@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, APIRouter, Depends
 
-from database import get_db
-from schemas.destination import DestinationCreate, DestinationResponse
-from crud.destination import (
+from app.database import get_db
+from app.schemas.destination import DestinationCreate, DestinationResponse
+from app.crud.destination import (
     create_destination,
     get_all_destinations,
     get_destination_by_id,
