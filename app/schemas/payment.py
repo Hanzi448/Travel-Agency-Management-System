@@ -7,7 +7,7 @@ class PaymentCreate(BaseModel):
     amount: float = Field(gt=0)
     payment_date: date  # ISO format date string
     payment_method: Optional[str] = None
-    status: Optional[str] = "Unpaid"
+    payment_status: Optional[str] = "Unpaid"
 
 class PaymentResponse(PaymentCreate):
     payment_id: int

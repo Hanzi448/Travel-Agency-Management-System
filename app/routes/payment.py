@@ -17,7 +17,7 @@ router = APIRouter(prefix="/payments", tags=["payments"])
 def add_payment(payment: PaymentCreate, db: Session = Depends(get_db)):
     created = create_payment(db, payment)
     if not created:
-        raise HTTPException(status_code=400, detail="Payment creation failed")
+        raise HTTPException(status_code=400, detail="Invalid booking, duplicate payment, or invalid amount")
     return created
 
 @router.get("/", response_model=list[PaymentResponse])
@@ -35,7 +35,7 @@ def read_payment(payment_id: int, db: Session = Depends(get_db)):
 def edit_payment(payment_id: int, payment: PaymentCreate, db: Session = Depends(get_db)):
     updated = update_payment(db, payment_id, payment)
     if not updated:
-        raise HTTPException(status_code=404, detail="Payment not found or invalid booking_id")
+        raise HTTPException(status_code=404, detail="Invalid booking, duplicate payment, or invalid amount")
     return updated
 
 @router.delete("/{payment_id}")

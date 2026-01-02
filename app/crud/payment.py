@@ -10,18 +10,18 @@ def create_payment(db: Session, payment: PaymentCreate):
     ).first()
 
     if not booking:
-        return None, "Booking not found"
+        return None
     
     # Check if payment already exists (1-to-1)
     existing_payment = db.query(Payment).filter(
         Payment.booking_id == payment.booking_id
     ).first()
     if existing_payment:
-        return None, "Payment for this booking already exists"
+        return None
     
     # Validate amount
-    if payment.amount > booking.total_price:
-        return None, "Payment amount exceeds booking total price"
+    if payment.amount > booking.total_cost:
+        return None
 
     db_payment = Payment(**payment.model_dump())
     db.add(db_payment)
@@ -38,29 +38,29 @@ def get_payment_by_id(db: Session, payment_id: int):
 def update_payment(db: Session, payment_id: int, payment_data: PaymentCreate):
     payment = get_payment_by_id(db, payment_id)
     if not payment:
-        return None, "Payment not found"
+        return None
     
     booking = db.query(Booking).filter(
         Booking.booking_id == payment_data.booking_id
     ).first()
 
     if not booking:
-        return None, "Booking not found"
+        return None
     
-    if payment_data.amount > booking.total_price:
-        return None, "Payment amount exceeds booking total price"
+    if payment_data.amount != booking.total_cost:
+        return None
     
     for key, value in payment_data.model_dump().items():
         setattr(payment, key, value)
 
     db.commit()
     db.refresh(payment)
-    return payment, None
+    return payment
 
 def delete_payment(db: Session, payment_id: int):
     payment = get_payment_by_id(db, payment_id)
     if not payment:
-        return None, "Payment not found"
+        return None
 
     db.delete(payment)
     db.commit()

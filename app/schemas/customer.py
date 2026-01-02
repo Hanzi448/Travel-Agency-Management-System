@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 # for customer creation and update
-class CustomerBase(BaseModel):
+class CustomerCreate(BaseModel):
     name: str
     contact_no: str
     email: EmailStr
@@ -11,7 +11,7 @@ class CustomerBase(BaseModel):
     nationality: Optional[str] = None
 
 # For returning customer data
-class CustomerCreate(CustomerBase):
+class CustomerResponse(CustomerCreate):
     customer_id: int
 
     class Config:

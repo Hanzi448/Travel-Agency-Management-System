@@ -13,7 +13,7 @@ def get_all_destinations(db: Session):
     return db.query(Destination).all()
 
 def get_destination_by_id(db: Session, destination_id: int):
-    return db.query(Destination).filter(Destination.id == destination_id).first()
+    return db.query(Destination).filter(Destination.destination_id == destination_id).first()
 
 def update_destination(db: Session, destination_id: int, destination_data: DestinationCreate):
     destination = get_destination_by_id(db, destination_id)

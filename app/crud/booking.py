@@ -34,7 +34,7 @@ def create_booking(db: Session, booking: BookingCreate):
     db.add(db_booking)
     db.commit()
     db.refresh(db_booking)
-    return db_booking, None
+    return db_booking
 
 def get_all_bookings(db: Session):
     return db.query(Booking).all()
@@ -45,21 +45,21 @@ def get_booking_by_id(db: Session, booking_id: int):
 def update_booking(db: Session, booking_id: int, booking_data: BookingCreate):
     booking = get_booking_by_id(db, booking_id)
     if not booking:
-        return None, "Booking not found"
+        return None
 
     # Validate that customer exists
     customer = db.query(Customer).filter(
         Customer.customer_id == booking_data.customer_id
     ).first()
     if not customer:
-        return None, "Customer not found"
+        return None
     
     # Validate that package exists
     package = db.query(Package).filter(
         Package.package_id == booking_data.package_id
     ).first()
     if not package:
-        return None, "Package not found"
+        return None
 
     booking.customer_id = booking_data.customer_id
     booking.package_id = booking_data.package_id
@@ -72,7 +72,7 @@ def update_booking(db: Session, booking_id: int, booking_data: BookingCreate):
 
     db.commit()
     db.refresh(booking)
-    return booking, None
+    return booking
 
 def delete_booking(db: Session, booking_id: int):
     booking = get_booking_by_id(db, booking_id)

@@ -29,6 +29,8 @@ def read_package(package_id: int, db: Session = Depends(get_db)):
     package = get_package_by_id(db, package_id)
     if not package:
         raise HTTPException(status_code=404, detail="Package not found")
+    
+    return package
 
 @router.put("/{package_id}", response_model=PackageResponse)
 def edit_package(package_id: int, package: PackageCreate, db: Session = Depends(get_db)):

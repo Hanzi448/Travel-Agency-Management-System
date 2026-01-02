@@ -13,7 +13,7 @@ def get_all_customers(db: Session):
     return db.query(Customer).all()
 
 def get_customer_by_id(db: Session, customer_id: int):
-    return db.query(Customer).filter(Customer.id == customer_id).first()
+    return db.query(Customer).filter(Customer.customer_id == customer_id).first()
 
 def update_customer(db: Session, customer_id: int, customer_data: CustomerCreate):
     customer = get_customer_by_id(db, customer_id)

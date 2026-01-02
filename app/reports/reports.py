@@ -16,14 +16,27 @@ def total_revenue(db: Session):
     return db.query(func.sum(Payment.amount)).filter(Payment.payment_status == "Paid").scalar()
 
 def most_popular_destinations(db: Session):
-    return db.query(
-        Destination.name,
+    results = db.query(
+        Destination.name.label("destination"),
         func.count(Booking.booking_id).label("total_bookings")
-    ).join(Package, Package.destination_id == Destination.destination_id
-    ).join(Booking, Booking.package_id == Package.package_id
-    ).group_by(Destination.name
-    ).order_by(func.count(Booking.booking_id).desc()
+    ).join(
+        Package, Package.destination_id == Destination.destination_id
+    ).join(
+        Booking, Booking.package_id == Package.package_id
+    ).group_by(
+        Destination.name
+    ).order_by(
+        func.count(Booking.booking_id).desc()
     ).all()
+
+    return [
+        {
+            "destination": row.destination,
+            "total_bookings": row.total_bookings
+        }
+        for row in results
+    ]
+
 
 def pending_payments(db: Session):
     return db.query(
