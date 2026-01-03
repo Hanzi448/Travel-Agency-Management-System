@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, APIRouter, Depends
+from app.exceptions import NotFoundError
 
 from app.database import get_db
 from app.schemas.destination import DestinationCreate, DestinationResponse
@@ -26,22 +27,23 @@ def read_destinations(db: Session = Depends(get_db)):
 
 @router.get("/{destination_id}", response_model=DestinationResponse)
 def read_destination(destination_id: int, db: Session = Depends(get_db)):
-    destination = get_destination_by_id(db, destination_id)
-    if not destination:
-        raise HTTPException(status_code=404, detail="Destination not found")
-    return destination
+    try:
+        return get_destination_by_id(db, destination_id)
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.put("/{destination_id}", response_model=DestinationResponse)
 def edit_destination(destination_id: int, destination: DestinationCreate, db: Session = Depends(get_db)):
-    updated = update_destination(db, destination_id, destination)
-    if not updated:
-        raise HTTPException(status_code=404, detail="Destination not found")
-    return updated
+    try:
+        return update_destination(db, destination_id, destination)
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.delete("/{destination_id}")
 def remove_destination(destination_id: int, db: Session = Depends(get_db)):
-    deleted = delete_destination(db, destination_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Destination not found")
-    return {"message": "Destination deleted successfully"}
+    try:
+        delete_destination(db, destination_id)
+        return {"message" : "Destination deleted successfully"}
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 

@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.customer import Customer
 from app.schemas.customer import CustomerCreate
+from app.exceptions import NotFoundError, ConflictError, ValidationError
 
 def create_customer(db: Session, customer: CustomerCreate):
     db_customer = Customer(**customer.model_dump())
@@ -13,12 +14,15 @@ def get_all_customers(db: Session):
     return db.query(Customer).all()
 
 def get_customer_by_id(db: Session, customer_id: int):
-    return db.query(Customer).filter(Customer.customer_id == customer_id).first()
+    customer = db.query(Customer).filter(Customer.customer_id == customer_id).first()
+    if not customer:
+        raise NotFoundError(f"Customer with id {customer_id} not found.")
+    return customer
 
 def update_customer(db: Session, customer_id: int, customer_data: CustomerCreate):
     customer = get_customer_by_id(db, customer_id)
     if not customer:
-        return None
+        raise NotFoundError(f"Customer with id {customer_id} not found.")
     
     for key, value in customer_data.model_dump().items():
         setattr(customer, key, value)
@@ -30,7 +34,7 @@ def update_customer(db: Session, customer_id: int, customer_data: CustomerCreate
 def delete_customer(db: Session, customer_id: int):
     customer = get_customer_by_id(db, customer_id)
     if not customer:
-        return None
+        raise NotFoundError(f"Customer with id {customer_id} not found.")
     
     db.delete(customer)
     db.commit()

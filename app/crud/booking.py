@@ -3,6 +3,7 @@ from app.models.booking import Booking
 from app.models.customer import Customer
 from app.models.package import Package
 from app.schemas.booking import BookingCreate
+from app.exceptions import NotFoundError
 
 def create_booking(db: Session, booking: BookingCreate):
     # Validate that customer exists
@@ -10,14 +11,14 @@ def create_booking(db: Session, booking: BookingCreate):
         Customer.customer_id == booking.customer_id
     ).first()
     if not customer:
-        return None
+        raise NotFoundError(f"Customer with id {booking.customer_id} not found.")
     
     # Validate that package exists
     package = db.query(Package).filter(
         Package.package_id == booking.package_id
     ).first()
     if not package:
-        return None
+        raise NotFoundError(f"Package with id {booking.package_id} not found.")
     
     # Calculate total cost (DERIVED ATTRIBUTE)
     total_cost = package.price * booking.no_of_persons
@@ -40,26 +41,28 @@ def get_all_bookings(db: Session):
     return db.query(Booking).all()
 
 def get_booking_by_id(db: Session, booking_id: int):
-    return db.query(Booking).filter(Booking.booking_id == booking_id).first()
+    booking = db.query(Booking).filter(Booking.booking_id == booking_id).first()
+    if not booking:
+        raise NotFoundError(f"Booking with id {booking_id} not found.")
 
 def update_booking(db: Session, booking_id: int, booking_data: BookingCreate):
     booking = get_booking_by_id(db, booking_id)
     if not booking:
-        return None
+        raise NotFoundError(f"Booking with id {booking_id} not found.")
 
     # Validate that customer exists
     customer = db.query(Customer).filter(
         Customer.customer_id == booking_data.customer_id
     ).first()
     if not customer:
-        return None
+        raise NotFoundError(f"Customer with id {booking_data.customer_id} not found.")
     
     # Validate that package exists
     package = db.query(Package).filter(
         Package.package_id == booking_data.package_id
     ).first()
     if not package:
-        return None
+        raise NotFoundError(f"Package with id {booking_data.package_id} not found.")
 
     booking.customer_id = booking_data.customer_id
     booking.package_id = booking_data.package_id
@@ -77,7 +80,7 @@ def update_booking(db: Session, booking_id: int, booking_data: BookingCreate):
 def delete_booking(db: Session, booking_id: int):
     booking = get_booking_by_id(db, booking_id)
     if not booking:
-        return None
+        raise NotFoundError("Booking with id {booking_id} not found.")
 
     db.delete(booking)
     db.commit()
