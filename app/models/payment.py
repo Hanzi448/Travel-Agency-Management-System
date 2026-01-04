@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Date, Numeric, String, ForeignKey, CheckConstraint
+from sqlalchemy import Column, Integer, Date, Numeric, String, ForeignKey, CheckConstraint, UniqueConstraint
 from app.database import Base
 
 class Payment(Base):
@@ -16,3 +16,6 @@ class Payment(Base):
     payment_method = Column(String(50))
     payment_status = Column(String(30), default="Unpaid")
     
+    __table_args__ = (
+        UniqueConstraint("booking_id", name="uq_payment_booking"),
+    )

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, CheckConstraint
+from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, CheckConstraint, Index
 from app.database import Base
 
 class Package(Base):
@@ -14,5 +14,12 @@ class Package(Base):
     duration = Column(Integer, CheckConstraint('duration > 0'), nullable=False)  # duration in days
     price = Column(Numeric(10, 2), CheckConstraint('price >= 0'))
     package_type = Column(String(50))
+
+    __table_args__ = (
+        Index("idx_package_destination", "destination_id"),
+    )
+
+
+
 
     

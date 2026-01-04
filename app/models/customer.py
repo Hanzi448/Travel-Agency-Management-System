@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text
+from sqlalchemy import Column, Integer, String, Text, Index
 from app.database import Base
 
 class Customer(Base):
@@ -11,4 +11,8 @@ class Customer(Base):
     address = Column(Text)
     gender = Column(String(10))
     nationality = Column(String(50))
+
+    __table_args__ = (
+        Index("idx_customer_email", "email"),
+    )
     

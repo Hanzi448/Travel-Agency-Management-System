@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, Date, CheckConstraint, String, Numeric
+from sqlalchemy import Column, Integer, ForeignKey, Date, CheckConstraint, String, Numeric, Index
 from app.database import Base
 
 class Booking(Base):
@@ -19,4 +19,11 @@ class Booking(Base):
     no_of_persons = Column(Integer, CheckConstraint('no_of_persons > 0'))
     total_cost = Column(Numeric(10, 2), CheckConstraint('total_cost > 0'))
     status = Column(String(30), default="Pending")
+
+    __table_args__ = (
+        Index("idx_booking_customer", "customer_id"),
+        Index("idx_booking_package", "package_id"),
+    )
+
+    
 

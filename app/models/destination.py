@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Numeric, CheckConstraint
+from sqlalchemy import Column, Integer, String, Text, Numeric, CheckConstraint, UniqueConstraint
 from app.database import Base
 
 class Destination(Base):
@@ -9,3 +9,7 @@ class Destination(Base):
     country = Column(String(100), nullable=False)
     description = Column(Text)
     average_cost = Column(Numeric(10, 2), CheckConstraint('average_cost >= 0'))
+
+    __table_args__ = (
+        UniqueConstraint("name", "country", name="uq_destination_name_country"),
+    )
