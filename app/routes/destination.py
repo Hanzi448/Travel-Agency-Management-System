@@ -4,7 +4,7 @@ from app.exceptions import NotFoundError
 
 from app.database import get_db
 from app.schemas.destination import DestinationCreate, DestinationResponse
-from app.crud.destination import (
+from app.services.destination import (
     create_destination,
     get_all_destinations,
     get_destination_by_id,

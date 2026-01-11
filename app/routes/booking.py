@@ -4,7 +4,7 @@ from app.exceptions import NotFoundError
 
 from app.database import get_db
 from app.schemas.booking import BookingCreate, BookingResponse
-from app.crud.booking import (
+from app.services.booking import (
     create_booking,
     get_all_bookings,
     get_booking_by_id,

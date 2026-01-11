@@ -4,7 +4,7 @@ from app.exceptions import NotFoundError, ValidationError, ConflictError
 
 from app.database import get_db
 from app.schemas.payment import PaymentCreate, PaymentResponse
-from app.crud.payment import (
+from app.services.payment import (
     create_payment,
     get_all_payments,
     get_payment_by_id,

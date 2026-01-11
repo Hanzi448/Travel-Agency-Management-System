@@ -4,7 +4,7 @@ from app.exceptions import NotFoundError
 
 from app.database import get_db
 from app.schemas.package import PackageCreate, PackageResponse
-from app.crud.package import (
+from app.services.package import (
     create_package,
     get_all_packages,
     get_package_by_id,

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas.customer import CustomerCreate, CustomerResponse
 from app.exceptions import NotFoundError
-from app.crud.customer import (
+from app.services.customer import (
     create_customer,
     get_all_customers,
     get_customer_by_id,
